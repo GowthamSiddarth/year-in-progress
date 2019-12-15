@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import moment from "moment";
+import { Line } from "rc-progress";
 import './App.css';
 
 class App extends Component {
@@ -8,7 +9,7 @@ class App extends Component {
     super();
 
     this.state = {
-      percentage: NaN,
+      percentage: undefined,
       day: new Date().toLocaleString()
     };
 
@@ -35,7 +36,8 @@ class App extends Component {
             {moment(this.state.day).format('DD MMM YYYY')}
           </div>
           <div className="progress">
-            {this.state.percentage ? this.state.percentage : ""}
+            <Line percent={this.state.percentage ? this.state.percentage : 0} strokeWidth="4" strokeColor="#000000" />
+            {this.state.percentage ? this.state.percentage + "%" : ""}
           </div>
         </header>
       </div>
