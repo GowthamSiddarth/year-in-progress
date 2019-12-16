@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import moment from "moment";
-import { Line } from "rc-progress";
+import { ProgressBar } from "react-bootstrap";
+
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class App extends Component {
 
@@ -10,7 +12,8 @@ class App extends Component {
 
     this.state = {
       percentage: undefined,
-      day: new Date().toLocaleString()
+      day: new Date().toLocaleString(),
+      metric: 'days'
     };
 
     this.updatePercentage = this.updatePercentage.bind(this);
@@ -36,9 +39,11 @@ class App extends Component {
           <div className="today">
             {moment(this.state.day).format('DD MMM YYYY')}
           </div>
-          <div className="progress">
-            <Line percent={this.state.percentage ? this.state.percentage : 0} strokeWidth="4" strokeColor="#000000" />
-            {this.state.percentage ? this.state.percentage + "%" : ""}
+          <div className="year-progress">
+            {
+              this.state.percentage ? <ProgressBar now={this.state.percentage}/> : ""
+            }
+            {this.state.percentage}
           </div>
         </header>
       </div>
