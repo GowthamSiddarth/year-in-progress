@@ -41,9 +41,8 @@ class App extends Component {
           </div>
           <div className="year-progress">
             {
-              this.state.percentage ? <ProgressBar now={this.state.percentage}/> : ""
+              this.state.percentage ? <ProgressBar now={this.state.percentage} label={`${this.state.percentage}%`} /> : ""
             }
-            {this.state.percentage}
           </div>
         </header>
       </div>
