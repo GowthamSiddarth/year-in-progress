@@ -24,7 +24,8 @@ class App extends Component {
   }
 
   componentDidMount() {
-    setTimeout(this.updatePercentage, 1000);
+    setImmediate(this.updatePercentage);
+    setInterval(this.updatePercentage, 86400);
   }
 
   render() {
