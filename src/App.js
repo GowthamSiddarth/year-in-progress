@@ -46,7 +46,7 @@ class App extends Component {
         break;
 
       case 'year':
-        numOfSeconds = moment().isLeapYear ? 31622400 : 31536000;
+        numOfSeconds = moment().isLeapYear() ? 31622400 : 31536000;
         break;
 
       default:
@@ -59,20 +59,40 @@ class App extends Component {
   updateMetric(e) {
     const newMetric = e.target.value;
     let newInterval = this.getNumOfSeconds(newMetric);
-    this.setState({ metric: newMetric, interval: newInterval }, this.updatePercentageByMetric);
+    this.setState({ metric: newMetric, interval: newInterval * 1000 }, this.updatePercentageByMetric);
   }
 
   updatePercentageBySeconds() {
-    const secondsPassedInCurrYear = moment() - moment().startOf('year');
+    const secondsPassedInCurrYear = (moment() - moment().startOf('year')) / 1000;
     const secondsInCurrYear = this.getNumOfSeconds('year');
 
     this.setState({ percentage: parseFloat(secondsPassedInCurrYear / secondsInCurrYear * 100).toFixed(2) });
+  }
+
+  updatePercentageByMinutes() {
+    const minutesPassedInCurrYear = moment().diff(moment().startOf('year'), 'minutes');
+    const minutesInCurrYear = moment().isLeapYear() ? 1440 * 366 : 1440 * 365;
+
+    this.setState({ percentage: parseFloat(minutesPassedInCurrYear / minutesInCurrYear * 100).toFixed(2) });
   }
 
   updatePercentageByMetric() {
     switch (this.state.metric) {
       case 'seconds':
         this.updatePercentageBySeconds();
+        break;
+
+      case 'minutes':
+        this.updatePercentageByMinutes();
+        break;
+
+      case 'hours':
+        break;
+
+      case 'days':
+        break;
+
+      case 'weeks':
         break;
 
       default:
