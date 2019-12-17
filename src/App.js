@@ -90,6 +90,11 @@ class App extends Component {
     this.setState({ percentage: parseFloat(daysPassedInCurrYear / dayssInCurrYear * 100).toFixed(2) });
   }
 
+  updatePercentageByWeeks() {
+    const now = moment();
+    this.setState({ percentage: parseFloat(now.week() / now.weeksInYear() * 100).toFixed(2) });
+  }
+
   updatePercentageByMetric() {
     switch (this.state.metric) {
       case 'seconds':
@@ -109,6 +114,7 @@ class App extends Component {
         break;
 
       case 'weeks':
+        this.updatePercentageByWeeks();
         break;
 
       default:
