@@ -64,7 +64,6 @@ class App extends Component {
 
   updatePercentageBySeconds() {
     const secondsPassedInCurrYear = (moment() - moment().startOf('year')) / 1000;
-    console.log("seconds = " + secondsPassedInCurrYear);
     const secondsInCurrYear = this.getNumOfSeconds('year');
 
     this.setState({ percentage: parseFloat(secondsPassedInCurrYear / secondsInCurrYear * 100).toFixed(2) });
@@ -72,7 +71,6 @@ class App extends Component {
 
   updatePercentageByMinutes() {
     const minutesPassedInCurrYear = moment().diff(moment().startOf('year'), 'minutes');
-    console.log("minutes = " + minutesPassedInCurrYear);
     const minutesInCurrYear = moment().isLeapYear() ? 1440 * 366 : 1440 * 365;
 
     this.setState({ percentage: parseFloat(minutesPassedInCurrYear / minutesInCurrYear * 100).toFixed(2) });
@@ -80,10 +78,16 @@ class App extends Component {
 
   updatePercentageByHours() {
     const hoursPassedInCurrYear = moment().diff(moment().startOf('year'), 'hours');
-    console.log("hours = " + hoursPassedInCurrYear);
     const hoursInCurrYear = moment().isLeapYear() ? 24 * 366 : 24 * 365;
 
     this.setState({ percentage: parseFloat(hoursPassedInCurrYear / hoursInCurrYear * 100).toFixed(2) });
+  }
+
+  updatePercentageByDays() {
+    const daysPassedInCurrYear = moment().diff(moment().startOf('year'), 'days');
+    const dayssInCurrYear = moment().isLeapYear() ? 366 : 365;
+
+    this.setState({ percentage: parseFloat(daysPassedInCurrYear / dayssInCurrYear * 100).toFixed(2) });
   }
 
   updatePercentageByMetric() {
@@ -101,6 +105,7 @@ class App extends Component {
         break;
 
       case 'days':
+        this.updatePercentageByDays();
         break;
 
       case 'weeks':
