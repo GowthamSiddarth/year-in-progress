@@ -11,6 +11,8 @@ This project shows the progress of the year so far, using various metric units l
 * Weeks
 * Months
 
+![Sample Screenshot](public/year-in-progress.PNG)
+
 ## Available Scripts
 
 In the project directory, you can run:
