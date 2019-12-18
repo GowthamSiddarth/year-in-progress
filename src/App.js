@@ -12,9 +12,10 @@ class App extends Component {
 
     this.state = {
       percentage: undefined,
-      day: new Date().toLocaleString(),
+      day: new Date(),
+      format: 'DD MMM YYYY',
       metric: 'days',
-      intervalTime: this.getNumOfSeconds('days'),
+      intervalTime: 1000,
       intervalId: undefined
     };
 
@@ -59,50 +60,73 @@ class App extends Component {
 
   updateMetric(e) {
     const newMetric = e.target.value;
-    let newintervalTime = this.getNumOfSeconds(newMetric) * 1000;
 
     clearInterval(this.state.intervalId);
-    const intervalId = setInterval(this.updatePercentageByMetric, newintervalTime);
+    const intervalId = setInterval(this.updatePercentageByMetric, this.state.intervalTime);
 
-    this.setState({ metric: newMetric, intervalTime: newintervalTime, intervalId: intervalId }, this.updatePercentageByMetric);
+    this.setState({ metric: newMetric, intervalId: intervalId }, this.updatePercentageByMetric);
   }
 
   updatePercentageBySeconds() {
     const secondsPassedInCurrYear = (moment() - moment().startOf('year')) / 1000;
     const secondsInCurrYear = this.getNumOfSeconds('year');
 
-    this.setState({ percentage: parseFloat(secondsPassedInCurrYear / secondsInCurrYear * 100).toFixed(2) });
+    this.setState({
+      percentage: parseFloat(secondsPassedInCurrYear / secondsInCurrYear * 100).toFixed(2),
+      day: new Date(),
+      format: 'DD MMM YYYY HH:mm:ss'
+    });
   }
 
   updatePercentageByMinutes() {
     const minutesPassedInCurrYear = moment().diff(moment().startOf('year'), 'minutes');
     const minutesInCurrYear = moment().isLeapYear() ? 1440 * 366 : 1440 * 365;
 
-    this.setState({ percentage: parseFloat(minutesPassedInCurrYear / minutesInCurrYear * 100).toFixed(2) });
+    this.setState({
+      percentage: parseFloat(minutesPassedInCurrYear / minutesInCurrYear * 100).toFixed(2),
+      day: new Date(),
+      format: 'DD MMM YYYY HH:mm'
+    });
   }
 
   updatePercentageByHours() {
     const hoursPassedInCurrYear = moment().diff(moment().startOf('year'), 'hours');
     const hoursInCurrYear = moment().isLeapYear() ? 24 * 366 : 24 * 365;
 
-    this.setState({ percentage: parseFloat(hoursPassedInCurrYear / hoursInCurrYear * 100).toFixed(2) });
+    this.setState({
+      percentage: parseFloat(hoursPassedInCurrYear / hoursInCurrYear * 100).toFixed(2),
+      day: new Date(),
+      format: 'DD MMM YYYY HH'
+    });
   }
 
   updatePercentageByDays() {
     const daysPassedInCurrYear = moment().diff(moment().startOf('year'), 'days');
     const dayssInCurrYear = moment().isLeapYear() ? 366 : 365;
 
-    this.setState({ percentage: parseFloat(daysPassedInCurrYear / dayssInCurrYear * 100).toFixed(2) });
+    this.setState({
+      percentage: parseFloat(daysPassedInCurrYear / dayssInCurrYear * 100).toFixed(2),
+      day: new Date(),
+      format: 'DD MMM YYYY'
+    });
   }
 
   updatePercentageByWeeks() {
     const now = moment();
-    this.setState({ percentage: parseFloat(now.week() / now.weeksInYear() * 100).toFixed(2) });
+    this.setState({
+      percentage: parseFloat(now.week() / now.weeksInYear() * 100).toFixed(2),
+      day: new Date(),
+      format: 'DD MMM YYYY ww'
+    });
   }
 
   updatePercentageByMonths() {
     const now = moment();
-    this.setState({ percentage: parseFloat(now.month() / 12 * 100).toFixed(2) });
+    this.setState({
+      percentage: parseFloat(now.month() / 12 * 100).toFixed(2),
+      day: new Date(),
+      format: 'DD MMM'
+    });
   }
 
   updatePercentageByMetric() {
@@ -146,7 +170,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h2>Year In Progress</h2>
+          <h1>Year In Progress</h1>
           <div className="metric">
             <Form>
               <Form.Group controlId="metric">
@@ -163,7 +187,7 @@ class App extends Component {
             </Form>
           </div>
           <div className="today">
-            {moment(this.state.day).format('DD MMM YYYY')}
+            {moment(this.state.day).format(this.state.format)}
           </div>
           <div className="year-progress">
             {
