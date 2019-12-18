@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import moment from "moment";
-import { ProgressBar, Form } from "react-bootstrap";
+import { ProgressBar, Form, Container, Row, Col } from "react-bootstrap";
 
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -170,30 +170,42 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1>Year In Progress</h1>
-          <div className="metric">
-            <Form>
-              <Form.Group controlId="metric">
-                <Form.Label>Select Metric</Form.Label>
-                <Form.Control as="select" value={this.state.metric} onChange={this.updateMetric}>
-                  <option>seconds</option>
-                  <option>minutes</option>
-                  <option>hours</option>
-                  <option>days</option>
-                  <option>weeks</option>
-                  <option>months</option>
-                </Form.Control>
-              </Form.Group>
-            </Form>
-          </div>
-          <div className="today">
-            {moment(this.state.day).format(this.state.format)}
-          </div>
-          <div className="year-progress">
-            {
-              this.state.percentage ? <ProgressBar now={this.state.percentage} label={`${this.state.percentage}%`} /> : ""
-            }
-          </div>
+          <Container>
+            <Row className="my-4">
+              <Col>
+                Year In Progress
+              </Col>
+            </Row>
+            <Row className="metric">
+              <Col md={{ span: 4, offset: 4 }}>
+                <Form>
+                  <Form.Group controlId="metric">
+                    <Form.Label>Select Metric</Form.Label>
+                    <Form.Control as="select" value={this.state.metric} onChange={this.updateMetric}>
+                      <option>seconds</option>
+                      <option>minutes</option>
+                      <option>hours</option>
+                      <option>days</option>
+                      <option>weeks</option>
+                      <option>months</option>
+                    </Form.Control>
+                  </Form.Group>
+                </Form>
+              </Col>
+            </Row>
+            <Row className="today">
+              <Col>
+                {moment(this.state.day).format(this.state.format)}
+              </Col>
+            </Row>
+            <Row className="year-progress my-4">
+              <Col md={{ span: 4, offset: 4 }}>
+                {
+                  this.state.percentage ? <ProgressBar now={this.state.percentage} label={`${this.state.percentage}%`} /> : ""
+                }
+              </Col>
+            </Row>
+          </Container>
         </header>
       </div>
     );
