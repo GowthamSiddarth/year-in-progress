@@ -14,7 +14,8 @@ class App extends Component {
       percentage: undefined,
       day: new Date().toLocaleString(),
       metric: 'days',
-      interval: this.getNumOfSeconds('days')
+      intervalTime: this.getNumOfSeconds('days'),
+      intervalId: undefined
     };
 
     this.updatePercentageByMetric = this.updatePercentageByMetric.bind(this);
@@ -58,8 +59,12 @@ class App extends Component {
 
   updateMetric(e) {
     const newMetric = e.target.value;
-    let newInterval = this.getNumOfSeconds(newMetric);
-    this.setState({ metric: newMetric, interval: newInterval * 1000 }, this.updatePercentageByMetric);
+    let newintervalTime = this.getNumOfSeconds(newMetric) * 1000;
+
+    clearInterval(this.state.intervalId);
+    const intervalId = setInterval(this.updatePercentageByMetric, newintervalTime);
+
+    this.setState({ metric: newMetric, intervalTime: newintervalTime, intervalId: intervalId }, this.updatePercentageByMetric);
   }
 
   updatePercentageBySeconds() {
@@ -133,7 +138,8 @@ class App extends Component {
 
   componentDidMount() {
     setImmediate(this.updatePercentageByMetric);
-    setInterval(this.updatePercentageByMetric, this.state.interval);
+    const intervalId = setInterval(this.updatePercentageByMetric, this.state.intervalTime);
+    this.setState({ intervalId: intervalId });
   }
 
   render() {
