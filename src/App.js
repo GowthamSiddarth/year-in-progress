@@ -21,41 +21,6 @@ class App extends Component {
 
     this.updatePercentageByMetric = this.updatePercentageByMetric.bind(this);
     this.updateMetric = this.updateMetric.bind(this);
-    this.getNumOfSeconds = this.getNumOfSeconds.bind(this);
-  }
-
-  getNumOfSeconds(metric) {
-    let numOfSeconds;
-    switch (metric) {
-      case 'seconds':
-        numOfSeconds = 1;
-        break;
-
-      case 'minutes':
-        numOfSeconds = 60;
-        break;
-
-      case 'hours':
-        numOfSeconds = 3600;
-        break;
-
-      case 'days':
-        numOfSeconds = 86400;
-        break;
-
-      case 'weeks':
-        numOfSeconds = 604800;
-        break;
-
-      case 'year':
-        numOfSeconds = moment().isLeapYear() ? 31622400 : 31536000;
-        break;
-
-      default:
-        break;
-    }
-
-    return numOfSeconds;
   }
 
   updateMetric(e) {
@@ -69,10 +34,10 @@ class App extends Component {
 
   updatePercentageBySeconds() {
     const secondsPassedInCurrYear = (moment() - moment().startOf('year')) / 1000;
-    const secondsInCurrYear = this.getNumOfSeconds('year');
+    const secondsInCurrYear = moment().isLeapYear() ? 31622400 : 31536000;
 
     this.setState({
-      percentage: parseFloat(secondsPassedInCurrYear / secondsInCurrYear * 100).toFixed(2),
+      percentage: parseFloat(secondsPassedInCurrYear / secondsInCurrYear * 100).toFixed(8),
       day: new Date(),
       format: 'DD MMM YYYY HH:mm:ss'
     });
@@ -83,7 +48,7 @@ class App extends Component {
     const minutesInCurrYear = moment().isLeapYear() ? 1440 * 366 : 1440 * 365;
 
     this.setState({
-      percentage: parseFloat(minutesPassedInCurrYear / minutesInCurrYear * 100).toFixed(2),
+      percentage: parseFloat(minutesPassedInCurrYear / minutesInCurrYear * 100).toFixed(4),
       day: new Date(),
       format: 'DD MMM YYYY HH:mm'
     });
@@ -94,7 +59,7 @@ class App extends Component {
     const hoursInCurrYear = moment().isLeapYear() ? 24 * 366 : 24 * 365;
 
     this.setState({
-      percentage: parseFloat(hoursPassedInCurrYear / hoursInCurrYear * 100).toFixed(2),
+      percentage: parseFloat(hoursPassedInCurrYear / hoursInCurrYear * 100).toFixed(4),
       day: new Date(),
       format: 'DD MMM YYYY HH'
     });
@@ -193,7 +158,7 @@ class App extends Component {
                 </Form>
               </Col>
             </Row>
-            <Row className="today">
+            <Row className="now">
               <Col>
                 {moment(this.state.day).format(this.state.format)}
               </Col>
@@ -201,7 +166,7 @@ class App extends Component {
             <Row className="year-progress my-4">
               <Col md={{ span: 4, offset: 4 }}>
                 {
-                  this.state.percentage ? <ProgressBar now={this.state.percentage} label={`${this.state.percentage}%`} /> : ""
+                  this.state.percentage ? <ProgressBar style={{height: '100%'}} now={this.state.percentage} label={`${this.state.percentage}%`} /> : ""
                 }
               </Col>
             </Row>
