@@ -79,7 +79,7 @@ class App extends Component {
   updatePercentageByWeeks() {
     const now = moment();
     this.setState({
-      percentage: parseFloat(now.week() / now.weeksInYear() * 100).toFixed(2),
+      percentage: parseFloat((now.week() - 1) / now.weeksInYear() * 100).toFixed(2),
       day: new Date(),
       format: 'DD MMM YYYY ww'
     });
